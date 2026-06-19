@@ -1,0 +1,2 @@
+http://example.com/project-hubert-mobile
+Acesse a demonstração interativa do aplicativo móvel de geração de cartões digitais e QR Codes inteligentes. Este app permite o compartilhamento instantâneo de contatos profissionais e portfólios via NFC ou QR Code dinâmico, totalmente otimizado para dispositivos Android e iOS com integração de links premium.

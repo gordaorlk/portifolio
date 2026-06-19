@@ -1,0 +1,19 @@
+# META DE KPI - SEGUNDO TRIMESTRE - HUBERT ANALÍSTICA
+# Descrição: Sumário Executivo de métricas consolidadas de conversão com indicadores e funis detalhados.
+
+--- INDICADORES DE CONVERSÃO EXECUTIVA ---
+
+1. Funil de Vendas Recorrentes (e-Commerce)
+   - Impressões de Vitrine: 1,248,903 (+12% MoM)
+   - Cadastro e Checkout Iniciado: 145,210 (11.6% Conversão)
+   - Pagamentos Confirmados: 48,220 (33.2% Conversão)
+   - Taxa de Sucesso no Gateway de Cartão: 94.2%
+
+2. Segmentação Demográfica & Dispositivos de Acesso
+   - Tráfego Mobile (Smartphones): 72.4% (Foco em Experiência Mobile)
+   - Tráfego Desktop: 25.1%
+   - Conversão por Rede Social (Instagram/LinkedIn): Alta Retenção (15 dias de LTV médio)
+
+3. Conclusão de Ações Recomendadas
+   - Implementar checkout em 1-clique para tráfego mobile.
+   - Expandir as campanhas de retargeting para clientes que cancelaram na etapa de pagamento.

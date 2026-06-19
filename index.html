@@ -1,0 +1,1964 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>josé Portfolio v2.0 Premium</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Space Grotesk", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      :root {
+        --theme-color: #38bdf8;
+        --theme-color-glow: rgba(56, 189, 248, 0.15);
+        --theme-text-h: #000000;
+        --theme-card: rgba(255, 255, 255, 0.03);
+      }
+      body {
+        background-color: #030712; /* Real pitch black deep slate for high contrast */
+        background-image: 
+          radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08) 0, transparent 40%),
+          radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.08) 0, transparent 40%),
+          radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.6) 0, #030712 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #f3f4f6;
+        font-family: 'Inter', sans-serif;
+      }
+      ::selection {
+        background: var(--theme-color);
+        color: #000000;
+      }
+      
+      /* Smooth transitions */
+      .transition-premium {
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      /* Animated glassmorphism glow backdrops */
+      .ambient-glow {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.22;
+        pointer-events: none;
+        z-index: 0;
+        mix-blend-mode: screen;
+        animation: rotateGlow 30s infinite alternate ease-in-out;
+      }
+      .ambient-glow-1 {
+        background: radial-gradient(circle, var(--theme-color) 0%, transparent 70%);
+        top: 15%;
+        left: -100px;
+      }
+      .ambient-glow-2 {
+        background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+        bottom: 10%;
+        right: -100px;
+        animation-delay: -10s;
+      }
+
+      @keyframes rotateGlow {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(50px, 40px) scale(1.15); }
+        100% { transform: translate(-30px, -20px) scale(0.9); }
+      }
+
+      /* Card Glass Frosted premium styling */
+      .glass-card {
+        background: rgba(13, 18, 30, 0.45);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+      }
+      .glass-card:hover {
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 18px var(--theme-color-glow);
+      }
+
+      /* Custom premium high fidelity scrollbars */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--theme-color);
+        box-shadow: 0 0 8px var(--theme-color);
+      }
+    </style>
+  </head>
+  <body class="overflow-x-hidden select-text relative">
+    
+    <!-- Ambient glowing backdrops -->
+    <div class="ambient-glow ambient-glow-1"></div>
+    <div class="ambient-glow ambient-glow-2"></div>
+    
+    <!-- Mobile/Tablet Sticky Top Bar -->
+    <div class="lg:hidden sticky top-0 left-0 right-0 h-16 bg-[#010c17]/90 backdrop-blur-md border-b border-white/10 px-6 flex items-center justify-between z-40">
+      <div class="flex items-center gap-2">
+        <i data-lucide="laptop" class="w-5 h-5 text-blue-400"></i>
+        <span class="font-display font-bold text-sm text-white uppercase tracking-wider">José Portfolio</span>
+      </div>
+      <button onclick="toggleMobileSidebar()" class="p-1.5 bg-white/5 hover:bg-white/10 active:bg-white/20 border border-white/10 rounded-xl text-white flex items-center justify-center transition-all" aria-label="Abrir Menu">
+        <i data-lucide="menu" id="mobile-menu-icon" class="w-5 h-5 text-white/80"></i>
+      </button>
+    </div>
+
+    <!-- Backdrop Overlay for Mobile Sidebar -->
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-45 hidden opacity-0 transition-opacity duration-300 ease-in-out lg:hidden"></div>
+
+    <div class="min-h-screen flex flex-col lg:flex-row relative" id="main-app">
+      
+      <!-- SIDEBAR -->
+      <aside class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-[#010e1a]/95 backdrop-blur-lg border-r border-white/10 flex flex-col p-6 font-sans shrink-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static lg:w-80 lg:max-w-none transition-transform duration-300 ease-in-out" id="portfolio-sidebar-container">
+        <!-- Profile Header -->
+        <div class="mb-6 pb-6 border-b border-white/10 flex items-center justify-between">
+          <div>
+            <h1 class="text-xs font-bold tracking-widest text-blue-400 uppercase font-display flex items-center gap-2">
+              <i data-lucide="laptop" class="w-4 h-4"></i> José Portfolio
+            </h1>
+            <p class="text-[10px] text-white/40 mt-1 uppercase tracking-wider font-mono">
+              v2.0 Premium Offline
+            </p>
+          </div>
+          <button onclick="toggleMobileSidebar()" class="lg:hidden p-1.5 hover:bg-white/5 active:bg-white/10 border border-white/10 rounded-lg text-white" aria-label="Fechar menu">
+            <i data-lucide="x" class="w-4 h-4 text-white/60"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Themes Selectors -->
+        <div class="space-y-4 mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="block text-[10px] font-mono text-white/40 uppercase tracking-widest font-semibold">
+              Navegar Projetos
+            </span>
+            <button onclick="rescanFolders()" class="text-[9px] font-mono text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1 bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded border border-white/5 hover:border-white/10 cursor-pointer active:scale-95" title="Recarregar projetos das pastas em tempo real">
+              <i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> Sincronizar
+            </button>
+          </div>
+          <div class="space-y-2" id="themes-list-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Dynamic Search & Filters -->
+        <div class="space-y-5 flex-1 pb-6">
+          <div class="space-y-2.5">
+            <span class="block text-[10px] font-mono text-white/40 uppercase tracking-widest font-semibold">
+              Busca Inteligente
+            </span>
+            <div class="relative">
+              <i data-lucide="search" class="absolute left-3 top-2.5 w-3.5 h-3.5 text-white/30"></i>
+              <input
+                id="search-input"
+                type="text"
+                placeholder="Filtrar por nome ou código..."
+                class="w-full text-xs bg-white/5 border border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-white focus:outline-none focus:border-white/30 transition font-mono placeholder:text-white/30"
+              />
+            </div>
+          </div>
+
+          <!-- Type Filters -->
+          <div class="space-y-2.5">
+            <span class="block text-[10px] font-mono text-white/40 uppercase tracking-widest font-semibold flex items-center gap-1.5">
+              <i data-lucide="filter" class="w-3 h-3 text-white/40"></i>
+              Filtrar por Tipo
+            </span>
+            <div class="grid grid-cols-2 gap-2" id="type-filters-container">
+              <button onclick="setTypeFilter('all')" id="filter-all" class="text-[10px] py-2 px-2 rounded-xl border border-white/20 font-bold bg-white/10 text-white shadow-sm transition-all text-center">
+                📦 Todos
+              </button>
+              <button onclick="setTypeFilter('codigo')" id="filter-codigo" class="text-[10px] py-2 px-2 rounded-xl border border-transparent font-medium bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all text-center">
+                💻 Códigos
+              </button>
+              <button onclick="setTypeFilter('texto')" id="filter-texto" class="text-[10px] py-2 px-2 rounded-xl border border-transparent font-medium bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all text-center">
+                📄 Textos
+              </button>
+              <button onclick="setTypeFilter('link')" id="filter-link" class="text-[10px] py-2 px-2 rounded-xl border border-transparent font-medium bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all text-center">
+                🔗 Links
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Status Box -->
+        <div class="p-4 border border-white/5 bg-white/5 rounded-2xl shadow-inner mb-4">
+          <div class="flex items-center justify-between text-[10px] uppercase text-white/40 mb-2 font-mono">
+            <span>System Status</span>
+            <span class="text-emerald-400 flex items-center gap-1 font-bold">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Active
+            </span>
+          </div>
+          <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-blue-400 h-full w-4/5"></div>
+          </div>
+        </div>
+
+        <!-- Footer Credentials -->
+        <div class="pt-4 border-t border-white/10 flex flex-col gap-2 font-mono text-[10px] text-white/40">
+          <a href="mailto:josé@gmail.com" class="flex items-center gap-1.5 hover:text-white transition-colors">
+            <i data-lucide="mail" class="w-3 h-3 text-white/40"></i>
+            josé@gmail.com
+          </a>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="laptop" class="w-3 h-3 text-white/40"></i>
+            <span>© 2026 josé Portfólio</span>
+          </div>
+          <div class="text-[9px] text-white/30 leading-normal bg-black/20 p-2 rounded border border-white/5 text-center">
+            Instalador Auto-Suficiente Local HTML
+          </div>
+        </div>
+      </aside>
+
+      <!-- WATERMARK BACKDROP -->
+      <div class="absolute top-0 right-0 p-12 sm:p-24 opacity-5 pointer-events-none select-none z-0">
+        <h2 id="watermark-text" class="text-[120px] sm:text-[180px] lg:text-[240px] font-black leading-none uppercase tracking-tighter text-blue-400 font-display">
+          JS
+        </h2>
+      </div>
+
+      <!-- MAIN WORKSPACE -->
+      <main class="flex-1 flex flex-col p-6 sm:p-10 lg:p-12 space-y-8 max-w-7xl mx-auto w-full overflow-y-auto relative z-10 custom-scrollbar">
+        <!-- Header -->
+        <header class="flex flex-col justify-end min-h-[120px] relative z-10 font-display">
+          <div class="flex items-center space-x-2 text-blue-400 mb-2 uppercase tracking-widest font-black text-[11px] sm:text-xs">
+            <span>/</span><span>HOME</span><span>/</span><span id="header-folder-path">JS</span>
+          </div>
+          <h1 id="header-title" class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-none uppercase tracking-tighter text-white break-words">
+            JavaScript Core
+          </h1>
+          <p id="header-description" class="text-base sm:text-lg text-white/60 mt-4 max-w-2xl font-light italic leading-relaxed">
+            ✨ Interatividade e Front-end moderno
+          </p>
+        </header>
+
+        <!-- Structure Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10 flex-1 items-start">
+          
+          <!-- Metadata Widgets side (Col 4) -->
+          <div class="col-span-1 lg:col-span-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-4">
+            <!-- Total count -->
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl flex items-center justify-between shadow-inner">
+              <div class="text-xs text-white/40 uppercase font-semibold tracking-wider font-mono">Total de Projetos</div>
+              <div id="stat-count" class="text-4xl font-bold text-blue-400 font-display">10</div>
+            </div>
+
+            <!-- Path context -->
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl flex items-center justify-between shadow-inner">
+              <div class="text-xs text-white/40 uppercase font-semibold tracking-wider font-mono">Diretório Ativo</div>
+              <div id="stat-path" class="text-sm font-mono text-white/80 tracking-tighter">/root/JS</div>
+            </div>
+
+            <!-- Recent list -->
+            <div class="bg-gradient-to-br from-blue-600/10 to-purple-600/10 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-xl">
+              <h3 class="text-xs uppercase font-black text-blue-400 mb-4 tracking-widest font-display flex items-center gap-1.5">
+                <i data-lucide="history" class="w-4 h-4"></i> Saídas Recentes
+              </h3>
+              <ul class="space-y-3.5 text-xs font-medium font-sans" id="recent-projects-list">
+                <!-- Rendered dynamically -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Accordion Project list container (Col 8) -->
+          <div class="col-span-1 lg:col-span-8 space-y-4">
+            <div class="flex items-center justify-between gap-3 text-xs font-mono text-white/40 border-b border-white/10 pb-3 font-semibold">
+              <span class="flex items-center gap-2">
+                <i data-lucide="folder-git" class="w-4 h-4 text-white/30 animate-pulse"></i>
+                <span id="filtered-label">2 de 10 Atividades encontradas</span>
+              </span>
+              <button
+                onclick="syncSimulator()"
+                class="flex items-center gap-1.5 hover:text-white transition-colors shrink-0 uppercase tracking-widest font-bold text-[10px]"
+                title="Sincronizar arquivos locais"
+              >
+                <i data-lucide="refresh-cw" id="sync-icon" class="w-3.5 h-3.5"></i>
+                Sincronizar
+              </button>
+            </div>
+
+            <div id="projects-accordion-list" class="space-y-4">
+              <!-- Rendered dynamic item list -->
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+    </div>
+
+    <!-- TOAST POPUP FOR FEEDBACK -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-[#0d2137] border-2 border-blue-400 text-white font-mono text-xs px-4 py-3 rounded-2xl shadow-2xl opacity-0 translate-y-10 pointer-events-none transition-all duration-300 flex items-center gap-2">
+      <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+      <span id="toast-message">Copiado para o Clipboard!</span>
+    </div>
+
+    <!-- CODE AND PROJECT DATABASE -->
+    <script>
+      const TEMAS = {
+        "JavaScript": {
+          "bg": "linear-gradient(135deg, #111111 0%, #323330 100%)",
+          "header": "#f7df1e", 
+          "text_h": "#000000", 
+          "card": "rgba(247, 223, 30, 0.05)",
+          "content_bg": "#ffffff", 
+          "content_text": "#f7df1e", 
+          "lang": "javascript",
+          "pasta": "javascript", 
+          "desc": "✨ Interatividade e Front-end moderno com empoderamento técnico em Vanilla ES6"
+        },
+        "Python": {
+          "bg": "linear-gradient(135deg, #021d33 0%, #033a63 100%)",
+          "header": "linear-gradient(to right, #3776ab, #ffde57)", 
+          "text_h": "#ffffff", 
+          "card": "rgba(255, 255, 255, 0.05)", 
+          "content_bg": "#1e1e26", 
+          "content_text": "#ffffff", 
+          "lang": "python", 
+          "pasta": "python", 
+          "desc": "🐍 Automação comercial, mineração inteligente, Web scrapers estruturados e rotinas de backend"
+        },
+        "Games": {
+          "bg": "linear-gradient(135deg, #0f0524 0%, #3b0a66 100%)",
+          "header": "linear-gradient(to right, #00ffcc, #0088ff)", 
+          "text_h": "#000000", 
+          "card": "rgba(0, 255, 204, 0.1)", 
+          "content_bg": "#0a0a0a", 
+          "content_text": "#00ffcc", 
+          "lang": "python", 
+          "pasta": "games", 
+          "desc": "🎮 Jogabilidade retrô clássica e simuladores de RPG em modo texto de TI"
+        },
+        "Ciência de Dados": {
+          "bg": "linear-gradient(135deg, #0d0221 0%, #240b36 100%)",
+          "header": "#ec4899", 
+          "text_h": "#ffffff", 
+          "card": "rgba(236, 72, 153, 0.1)", 
+          "content_bg": "#090514", 
+          "content_text": "#ec4899", 
+          "lang": "markdown",
+          "pasta": "ciencia_de_dados", 
+          "desc": "🔬 Experimentos Científicos de Dados, Processamento Estatístico e Visualizações de Alta Fidelidade"
+        },
+        "Engenharia de Prompt": {
+          "bg": "linear-gradient(135deg, #022329 0%, #0d9488 100%)",
+          "header": "#2dd4bf", 
+          "text_h": "#010e1a", 
+          "card": "rgba(45, 212, 191, 0.1)", 
+          "content_bg": "#041416", 
+          "content_text": "#2dd4bf", 
+          "lang": "markdown",
+          "pasta": "engenharia_de_prompt", 
+          "desc": "🧠 Engenharia Avançada de Prompts, Metodologias de LLMs e Orquestração Cognitiva de IA"
+        }
+      };
+
+      const FALLBACK_PROJETOS = [
+        {
+          tema: "JavaScript",
+          nome: "carrossel_interativo.js",
+          ext: "js",
+          tipo: "codigo",
+          caminho_relativo: "javascript/carrossel_interativo.js",
+          conteudo: `// --- Carrossel de Imagens Responsivo de Alta Performance ---
+// Autor: josé
+// Descrição: Um carrossel interativo construído com JavaScript Baunilha (Vanilla),
+// otimizado para dispositivos móveis com suporte a gestos de arraste (swipe).
+
+class PremiumCarousel {
+  constructor(containerId, options = {}) {
+    this.container = document.getElementById(containerId);
+    this.slides = Array.from(this.container.querySelectorAll('.slide'));
+    this.currentIndex = 0;
+    this.interval = options.interval || 3000;
+    this.autoPlay = options.autoPlay !== false;
+    
+    this.init();
+  }
+
+  init() {
+    this.setupStyles();
+    this.createControls();
+    if (this.autoPlay) this.startAutoPlay();
+    this.setupSwipeEvents();
+  }
+
+  setupStyles() {
+    this.container.style.position = 'relative';
+    this.container.style.overflow = 'hidden';
+    this.slides.forEach((slide, idx) => {
+      slide.style.position = 'absolute';
+      slide.style.top = '0';
+      slide.style.left = '0';
+      slide.style.width = '100%';
+      slide.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+      slide.style.transform = \`translateX(\${100 * idx}%)\`;
+    });
+  }
+
+  createControls() {
+    const prevBtn = document.createElement('button');
+    prevBtn.innerHTML = '←';
+    prevBtn.className = 'carousel-btn prev';
+    prevBtn.onclick = () => this.prev();
+
+    const nextBtn = document.createElement('button');
+    nextBtn.innerHTML = '→';
+    nextBtn.className = 'carousel-btn next';
+    nextBtn.onclick = () => this.next();
+
+    this.container.appendChild(prevBtn);
+    this.container.appendChild(nextBtn);
+  }
+
+  goTo(index) {
+    if (index < 0) index = this.slides.length - 1;
+    if (index >= this.slides.length) index = 0;
+    
+    this.currentIndex = index;
+    this.slides.forEach((slide, idx) => {
+      slide.style.transform = \`translateX(\${100 * (idx - this.currentIndex)}%)\`;
+    });
+  }
+
+  next() {
+    this.goTo(this.currentIndex + 1);
+  }
+
+  prev() {
+    this.goTo(this.currentIndex - 1);
+  }
+
+  startAutoPlay() {
+    this.timer = setInterval(() => this.next(), this.interval);
+    this.container.onmouseenter = () => clearInterval(this.timer);
+    this.container.onmouseleave = () => this.startAutoPlay();
+  }
+
+  setupSwipeEvents() {
+    let startX = 0;
+    this.container.ontouchstart = (e) => startX = e.touches[0].clientX;
+    this.container.ontouchend = (e) => {
+      let deltaX = e.changedTouches[0].clientX - startX;
+      if (deltaX > 50) this.prev();
+      if (deltaX < -50) this.next();
+    };
+  }
+}
+
+const carousel = new PremiumCarousel('meu-carrossel', { interval: 4000 });`
+        },
+        {
+          tema: "JavaScript",
+          nome: "efeito_particulas.js",
+          ext: "js",
+          tipo: "codigo",
+          caminho_relativo: "javascript/efeito_particulas.js",
+          conteudo: `// --- Gerador Dinâmico de Partículas ---
+// Autor: josé
+// Descrição: Canvas interativo que renderiza partículas que reagem ao mouse.
+
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+const numberOfParticles = 80;
+
+const mouse = {
+  x: null,
+  y: null,
+  radius: 120
+};
+
+window.addEventListener('mousemove', (event) => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = event.clientX - rect.left;
+  mouse.y = event.clientY - rect.top;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 4 + 1;
+    this.speedX = Math.random() * 1.5 - 0.75;
+    this.speedY = Math.random() * 1.5 - 0.75;
+    this.color = 'rgba(247, 223, 30, 0.8)';
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+    let dx = mouse.x - this.x;
+    let dy = mouse.y - this.y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance < mouse.radius) {
+      if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
+      if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
+      if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
+      if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+    }
+  }
+
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function init() {
+  particlesArray = [];
+  for (let i = 0; i < numberOfParticles; i++) {
+    particlesArray.push(new Particle());
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < particlesArray.length; i++) {
+    particlesArray[i].update();
+    particlesArray[i].draw();
+  }
+  requestAnimationFrame(animate);
+}
+
+init();
+animate();`
+        },
+        {
+          tema: "Python",
+          nome: "analise_vendas.py",
+          ext: "py",
+          tipo: "codigo",
+          caminho_relativo: "python/analise_vendas.py",
+          conteudo: `# --- Análise Automatizada de Vendas com Pandas ---
+# Autor: josé
+# Descrição: Processa faturamento comercial, KPI e calcula projeções.
+
+import pandas as pd
+import numpy as np
+
+def carregar_dados(caminho_csv):
+    df = pd.read_csv(caminho_csv)
+    df['Faturamento'].fillna(0, inplace=True)
+    df['Data'] = pd.to_datetime(df['Data'])
+    df['Faturamento_Bruto'] = df['Quantidade'] * df['Preco_Unitario']
+    return df
+
+def calcular_kpis(df):
+    total = df['Faturamento_Bruto'].sum()
+    ticket_medio = df['Faturamento_Bruto'].mean()
+    unidades = df['Quantidade'].sum()
+    return {"receita_total": total, "ticket_medio": ticket_medio, "total_unidades": unidades}`
+        },
+        {
+          tema: "Python",
+          nome: "web_scraper.py",
+          ext: "py",
+          tipo: "codigo",
+          caminho_relativo: "python/web_scraper.py",
+          conteudo: `# --- Coletor Inteligente de Cotações Financeiras ---
+# Autor: josé
+# Descrição: Web Scraper robusto usando requests e BeautifulSoup com fallback.
+
+import requests
+from bs4 import BeautifulSoup
+import json
+import time
+
+def buscar_cotacoes():
+    url = "https://www.cambio-hoje.com.br"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    try:
+        r = requests.get(url, headers=headers, timeout=10)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        dolar = soup.find("span", {"id": "cotacao-dolar"}).text.strip()
+        euro = soup.find("span", {"id": "cotacao-euro"}).text.strip()
+        return {"dolar": dolar, "euro": euro, "status": "sucesso"}
+    except Exception:
+        return {"dolar": "R$ 5.42", "euro": "R$ 5.86", "status": "fallback"}`
+        },
+        {
+          tema: "Games",
+          nome: "rpg_textual.py",
+          ext: "py",
+          tipo: "codigo",
+          caminho_relativo: "games/rpg_textual.py",
+          conteudo: `# --- RPG Textual: A Jornada do Desenvolvedor ---
+# Autor: josé
+# Descrição: RPG em modo terminal simulando as escolhas de carreira de TI de um Júnior.
+
+def aventura():
+    status = {"saude_mental": 100, "conhecimento": 15, "cafe": 3}
+    print("⚔️ BEM-VINDO À JORNADA DO DESENVOLVEDOR RPG! ⚔️")
+    print("O temível erro 500 em produção quinta feira 17h50!")
+    print("1. Resolve sozinho (-saúde, +conhecimento)\\n2. Sobe fininho (+saúde, -conhecimento)\\n3. Pede ajuda")
+    # ...`
+        },
+        {
+          tema: "Games",
+          nome: "snake_game.py",
+          ext: "py",
+          tipo: "codigo",
+          caminho_relativo: "games/snake_game.py",
+          conteudo: `# --- Snake Game Clássico com Pygame ---
+# Autor: josé
+# Descrição: Snake retro jogável em pygame com controles direcionais e contador.
+
+import pygame
+import random
+
+pygame.init()
+LARGURA, ALTURA = 640, 480
+tela = pygame.display.set_mode((LARGURA, ALTURA))
+pygame.display.set_caption("Retro Snake")
+# Game loop cobra...`
+        },
+        {
+          tema: "Ciência de Dados",
+          nome: "mobile_app_links.txt",
+          ext: "txt",
+          tipo: "link",
+          caminho_relativo: "ciencia_de_dados/mobile_app_links.txt",
+          conteudo: `http://example.com/project-josé-mobile
+Acesse a demonstração interativa do aplicativo móvel de geração de cartões digitais e QR Codes inteligentes. Este app permite o compartilhamento instantâneo de contatos profissionais e portfólios via NFC ou QR Code dinâmico, totalmente otimizado para dispositivos Android e iOS com integração de links premium.`
+        },
+        {
+          tema: "Ciência de Dados",
+          nome: "qr_generator.js",
+          ext: "js",
+          tipo: "codigo",
+          caminho_relativo: "ciencia_de_dados/qr_generator.js",
+          conteudo: `// --- Gerador de QR Code com Sobreposição de Logotipo ---
+// Autor: josé
+// Descrição: NodeJS script que renderiza códigos QR robustos contendo logos centralizados.
+
+const qrCode = require('qrcode');
+const { createCanvas, loadImage } = require('canvas');
+
+async function gerarQR(url, logoPath, savePath) {
+  const canvas = createCanvas(300, 300);
+  await qrCode.toCanvas(canvas, url, { errorCorrectionLevel: 'H' });
+  const ctx = canvas.getContext('2d');
+  // Overlay logo...
+}`
+        },
+        {
+          tema: "Engenharia de Prompt",
+          nome: "dashboard_financeiro.sql",
+          ext: "sql",
+          tipo: "codigo",
+          caminho_relativo: "engenharia_de_prompt/dashboard_financeiro.sql",
+          conteudo: `-- --- Query de Análise Financeira & Churn Mensal ---
+-- Autor: josé
+-- Descrição: Extrai volume de faturamento trimestral, MRR e Churn Rate.
+
+WITH assinaturas_ativas AS (
+  SELECT user_id, plan_type, mrr_value, start_date, cancel_date
+  FROM user_subscriptions
+  WHERE status IN ('active', 'cancelled')
+)
+SELECT DATE_TRUNC('month', start_date) AS mes, SUM(mrr_value) AS total_mrr
+FROM assinaturas_ativas
+GROUP BY 1 ORDER BY 1 DESC;`
+        },
+        {
+          tema: "Engenharia de Prompt",
+          nome: "relatorio_insights.txt",
+          ext: "txt",
+          tipo: "texto",
+          caminho_relativo: "engenharia_de_prompt/relatorio_insights.txt",
+          conteudo: `# META DE KPI - SEGUNDO TRIMESTRE - josé ANALÍSTICA
+
+--- INDICADORES DE CONVERSÃO EXECUTIVA ---
+
+1. Funil de Vendas Recorrentes (e-Commerce)
+   - Impressões de Vitrine: 1,248,903 (+12% MoM)
+   - Cadastro e Checkout Iniciado: 145,210 (11.6% Conversão)
+   - Pagamentos Confirmados: 48,220 (33.2% Conversão)
+   - Taxa de Sucesso no Gateway de Cartão: 94.2%
+
+2. Segmentação Demográfica & Dispositivos de Acesso
+   - Tráfego Mobile (Smartphones): 72.4% (Foco em Experiência Mobile)
+   - Tráfego Desktop: 25.1%
+   - Conversão por Rede Social: Alta Retenção (15 dias de LTV médio)
+
+3. Ações Recomendadas
+   - Implementar checkout em 1-clique para tráfego mobile.
+   - Expandir campanhas de retargeting para checkout abandonado.`
+        }
+      ];
+
+      // STATE ENGINE
+      let PROJETOS = [];
+      let fetchedThemes = {};
+
+      // RESCAN AND REFETCH ALL FOLDERS DYNAMICALLY
+      function rescanFolders() {
+        fetchedThemes = {};
+        selectTheme(selectedTemaKey);
+        Object.keys(TEMAS).forEach(tk => {
+          if (tk !== selectedTemaKey) {
+            fetchThemeProjects(tk);
+          }
+        });
+      }
+
+      // DYNAMIC AUTOMATIC FOLDER PULLING FUNCTION
+      async function fetchThemeProjects(themeKey) {
+        const folder = TEMAS[themeKey].pasta;
+        
+        // Show local folder-pulling loading overlay if it wasn't fetched yet and is active
+        if (!fetchedThemes[themeKey] && selectedTemaKey === themeKey) {
+          const listContainer = document.getElementById("projects-accordion-list");
+          if (listContainer) {
+            listContainer.innerHTML = `
+              <div class="text-center py-20 px-4 flex flex-col items-center justify-center space-y-4">
+                <div class="w-10 h-10 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin"></div>
+                <p class="text-xs text-white/50 font-mono">Buscando atividades de /${folder} de forma automática...</p>
+              </div>
+            `;
+          }
+        }
+
+        try {
+          const res = await fetch(`/api/projects?folder=${folder}`);
+          if (!res.ok) throw new Error("HTTP failure");
+          const data = await res.json();
+          
+          if (Array.isArray(data)) {
+            // Remove previous projects for this theme in dynamic PROJETOS array
+            PROJETOS = PROJETOS.filter(p => p.tema !== themeKey);
+            
+            // Map the API results to the local format
+            const mapped = data.map(item => {
+              let tipo = item.tipo;
+              // Detect link in text
+              if (tipo === "texto" && item.conteudo.trim().startsWith("http")) {
+                tipo = "link";
+              }
+              return {
+                tema: themeKey,
+                nome: item.nome,
+                ext: item.ext,
+                tipo: tipo,
+                caminho_relativo: item.caminho_relativo,
+                conteudo: item.conteudo
+              };
+            });
+            
+            PROJETOS.push(...mapped);
+            fetchedThemes[themeKey] = true;
+          }
+        } catch (e) {
+          console.warn(`Erro ao buscar pasta /${folder} via backend API:`, e);
+        } finally {
+          if (selectedTemaKey === themeKey) {
+            renderProjects();
+            loadRecentOutputs();
+          }
+        }
+      }
+
+      // GLOBAL SPA STATE
+      let selectedTemaKey = "JavaScript";
+      let typeFilter = "all";
+      let searchQuery = "";
+      let activeOpenCard = null;
+      let mobileSidebarOpen = false;
+
+      // TOGGLE MOBILE SIDEBAR
+      function toggleMobileSidebar() {
+        mobileSidebarOpen = !mobileSidebarOpen;
+        const sidebar = document.getElementById("portfolio-sidebar-container");
+        const backdrop = document.getElementById("sidebar-backdrop");
+        const menuIcon = document.getElementById("mobile-menu-icon");
+
+        if (mobileSidebarOpen) {
+          sidebar.classList.remove("-translate-x-full");
+          backdrop.classList.remove("hidden");
+          setTimeout(() => {
+            backdrop.classList.add("opacity-100");
+          }, 50);
+          if (menuIcon) {
+            menuIcon.setAttribute("data-lucide", "x");
+            lucide.createIcons();
+          }
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          backdrop.classList.remove("opacity-100");
+          setTimeout(() => {
+            if (!mobileSidebarOpen) {
+              backdrop.classList.add("hidden");
+            }
+          }, 300);
+          if (menuIcon) {
+            menuIcon.setAttribute("data-lucide", "menu");
+            lucide.createIcons();
+          }
+        }
+      }
+
+      // RECENT OUTPUTS LOADER Helper
+      function loadRecentOutputs() {
+        const listDiv = document.getElementById("recent-projects-list");
+        listDiv.innerHTML = "";
+        
+        const folderProjects = PROJETOS.filter(p => p.tema === selectedTemaKey);
+        folderProjects.slice(0, 3).forEach((proj, idx) => {
+          const li = document.createElement("li");
+          li.className = `flex items-center justify-between border-b border-white/5 pb-2.5 ${idx > 0 ? "opacity-60" : ""}`;
+          li.innerHTML = `
+            <span class="font-mono text-white/80 uppercase truncate max-w-[150px]" title="${proj.nome}">${proj.nome}</span>
+            <span class="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-300 border border-blue-400/20 rounded font-mono font-bold uppercase shrink-0">${proj.tipo}</span>
+          `;
+          listDiv.appendChild(li);
+        });
+
+        if(folderProjects.length === 0) {
+          listDiv.innerHTML = `<li class="text-white/30 italic text-xs">Sem atividades registradas</li>`;
+        }
+      }
+
+      // THEMES SIDEBAR SELECTORS WRITER
+      function loadThemesSidebar() {
+        const container = document.getElementById("themes-list-container");
+        container.innerHTML = "";
+
+        Object.entries(TEMAS).map(([key, config]) => {
+          const isSelected = key === selectedTemaKey;
+          const btn = document.createElement("button");
+          btn.onclick = () => selectTheme(key);
+          btn.className = `w-full flex items-center justify-between text-left text-sm px-4 py-3 rounded-xl transition-all duration-200 relative group border ${
+            isSelected
+              ? "bg-white/10 border-white/25 text-white font-bold shadow-md"
+              : "bg-transparent border-transparent text-white/40 hover:bg-white/5 hover:text-white/80"
+          }`;
+
+          let iconHTML = `<i data-lucide="code" class="w-4 h-4 shrink-0"></i>`;
+          if(key === "JavaScript") iconHTML = `<i data-lucide="braces" class="w-4 h-4 shrink-0"></i>`;
+          if(key === "Python") iconHTML = `<i data-lucide="code" class="w-4 h-4 shrink-0"></i>`;
+          if(key === "Games") iconHTML = `<i data-lucide="gamepad-2" class="w-4 h-4 shrink-0"></i>`;
+          if(key === "Ciência de Dados") iconHTML = `<i data-lucide="database" class="w-4 h-4 shrink-0"></i>`;
+          if(key === "Engenharia de Prompt") iconHTML = `<i data-lucide="brain" class="w-4 h-4 shrink-0"></i>`;
+
+          btn.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="${isSelected ? 'text-blue-400' : 'text-white/40 group-hover:text-white/60'}">${iconHTML}</span>
+              <span class="font-display tracking-tight text-sm uppercase">${key}</span>
+            </div>
+            <span class="text-[9px] font-mono px-2 py-0.5 rounded border ${
+              isSelected
+                ? 'bg-neutral-950/65 text-white/80 border-white/10'
+                : 'bg-black/20 text-white/30 border-white/5 group-hover:text-white/60'
+            }">${config.pasta}</span>
+          `;
+          container.appendChild(btn);
+        });
+        
+        lucide.createIcons();
+      }
+
+      // SELECT THEME TRIGGER
+      function selectTheme(themeKey) {
+        selectedTemaKey = themeKey;
+        activeOpenCard = null;
+
+        const config = TEMAS[themeKey];
+        
+        // CSS properties reactivity
+        const root = document.documentElement;
+        const rootColor = config.header.includes("linear") ? "#38bdf8" : config.header;
+        root.style.setProperty('--theme-color', rootColor);
+        root.style.setProperty('--theme-color-glow', config.header.includes("linear") ? "rgba(56, 189, 248, 0.25)" : `${config.header}35`);
+        root.style.setProperty('--theme-text-h', config.text_h);
+        root.style.setProperty('--theme-card', config.card);
+
+        // UI Header Updates
+        document.getElementById("watermark-text").innerText = config.pasta;
+        document.getElementById("header-folder-path").innerText = config.pasta;
+        document.getElementById("header-title").innerText = `${themeKey} Core`;
+        document.getElementById("header-description").innerText = config.desc;
+
+        // Path Widget Stats
+        document.getElementById("stat-path").innerText = `/root/${config.pasta}`;
+
+        loadThemesSidebar();
+        fetchThemeProjects(themeKey);
+
+        // Auto close mobile drawer if open when switching topics
+        if (mobileSidebarOpen) {
+          toggleMobileSidebar();
+        }
+      }
+
+      // TYPE SELECTION TRIGGER
+      function setTypeFilter(type) {
+        typeFilter = type;
+        const filterBtns = ["all", "codigo", "texto", "link"];
+        filterBtns.forEach(btn => {
+          const el = document.getElementById(`filter-${btn}`);
+          if(btn === type) {
+            el.className = "text-[10px] py-2 px-2 rounded-xl border border-white/20 font-bold bg-white/10 text-white shadow-sm transition-all text-center";
+          } else {
+            el.className = "text-[10px] py-2 px-2 rounded-xl border border-transparent font-medium bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all text-center";
+          }
+        });
+        renderProjects();
+      }
+
+      // SEARCH QUERY TRIGGER
+      document.getElementById("search-input").addEventListener("input", (e) => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        renderProjects();
+      });
+
+      // SYNC SIMULATION TRIGGER
+      async function syncSimulator() {
+        const icon = document.getElementById("sync-icon");
+        if (icon.classList.contains("animate-spin")) return;
+        
+        icon.classList.add("animate-spin");
+        const folder = TEMAS[selectedTemaKey].pasta;
+        showToast(`Buscando e sincronizando arquivos da pasta /${folder}...`);
+        
+        // Clear cached state for this folder to force a real re-fetch from disk
+        fetchedThemes[selectedTemaKey] = false;
+        await fetchThemeProjects(selectedTemaKey);
+        
+        icon.classList.remove("animate-spin");
+        showToast(`Pasta /${folder} sincronizada com sucesso!`);
+      }
+
+      // SHOW TOAST DELIGHT
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-message").innerText = message;
+        toast.className = toast.className.replace("opacity-0 translate-y-10 pointer-events-none", "opacity-100 translate-y-0 pointer-events-auto");
+        
+        setTimeout(() => {
+          toast.className = toast.className.replace("opacity-100 translate-y-0 pointer-events-auto", "opacity-0 translate-y-10 pointer-events-none");
+        }, 3000);
+      }
+
+      // CONVERTER TEXTO EM LINKS HIPERTEXTO DENTRO DOS ARQUIVOS
+      function convertTextToHyperlinks(text) {
+        if (!text) return "";
+        // Regex para encontrar links HTTPS/HTTP e convertê-los em tags <a> com estilo e id
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlRegex, (url) => {
+          let cleanUrl = url;
+          let suffix = "";
+          if (/[.,;:?]$/.test(url)) {
+            cleanUrl = url.substring(0, url.length - 1);
+            suffix = url.charAt(url.length - 1);
+          }
+          const escapedUrl = cleanUrl.replace(/"/g, '&quot;');
+          return `<a href="${escapedUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline hover:text-blue-300 font-semibold transition-colors duration-150 inline-flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded border border-white/5 hover:bg-white/10" id="link-${Math.floor(Math.random() * 100000)}">
+            ${escapedUrl}
+            <i data-lucide="external-link" class="w-3.5 h-3.5 inline-block shrink-0"></i>
+          </a>${suffix}`;
+        });
+      }
+
+      // CARD COPY CLIPBOARD HANDLER
+      function copyText(e, text) {
+        e.stopPropagation();
+        navigator.clipboard.writeText(text);
+        showToast("Código copiado para o clipboard com sucesso!");
+      }
+
+      // ACCORDION ACCENT COLOR HELPER
+      function getHeaderStyle(isOpen) {
+        const tema = TEMAS[selectedTemaKey];
+        if (isOpen) {
+          if (tema.header.includes("linear")) {
+            return `background: linear-gradient(to right, #38bdf8, #a855f7); color: #000000;`;
+          }
+          return `background: ${tema.header}; color: ${tema.text_h};`;
+        }
+        return `background: transparent; color: #ffffff;`;
+      }
+
+      // DYNAMIC PLAYGROUND RENDER SWITCH
+      function getPlaygroundHTML(fileName) {
+        const name = fileName.toLowerCase();
+        
+        // 1. Particle Generator
+        if (name.includes("partic")) {
+          return `
+            <div class="mb-4 p-4 bg-neutral-900 border border-neutral-800 rounded-xl space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-1 border-b border-neutral-800 pb-3">
+                <span class="flex items-center gap-1.5 text-xs font-semibold text-neutral-300 font-mono">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+                  PREVIEW CANVASES: efeito_particulas.js
+                </span>
+                <div class="flex items-center gap-3">
+                  <div class="flex gap-2 items-center" id="particle-color-palette">
+                    <button onclick="setGlobalParticleColor('#f7df1e')" class="w-4 h-4 rounded-full bg-[#f7df1e] border-2 border-white"></button>
+                    <button onclick="setGlobalParticleColor('#38bdf8')" class="w-4 h-4 rounded-full bg-[#38bdf8] border border-transparent"></button>
+                    <button onclick="setGlobalParticleColor('#ec4899')" class="w-4 h-4 rounded-full bg-[#ec4899] border border-transparent"></button>
+                    <button onclick="setGlobalParticleColor('#10b981')" class="w-4 h-4 rounded-full bg-[#10b981] border border-transparent"></button>
+                  </div>
+                  <span class="text-[10px] text-neutral-400 font-mono">Partículas:</span>
+                  <input type="range" min="30" max="150" value="80" oninput="setGlobalParticleCount(this.value)" class="w-14 accent-amber-400 h-1 rounded" />
+                </div>
+              </div>
+              <div class="relative overflow-hidden bg-neutral-950 rounded-lg cursor-crosshair">
+                <canvas id="playground-particle-canvas" class="block w-full h-[220px]"></canvas>
+                <div class="absolute bottom-2 left-2 pointer-events-none text-[9px] text-neutral-500 font-mono bg-neutral-900/80 px-2 py-0.5 rounded border border-neutral-800">
+                  Mova o mouse para interagir
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // 2. Snake Game
+        if (name.includes("snake")) {
+          return `
+            <div class="mb-4 p-4 bg-purple-950/20 border border-purple-900/30 rounded-xl space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-purple-950 pb-3">
+                <span class="flex items-center gap-1.5 text-xs font-semibold text-purple-200 font-mono">
+                  <i data-lucide="gamepad-2" class="w-4 h-4 text-emerald-400"></i>
+                  PLAYABLE PREVIEW: snake_game.py
+                </span>
+                <div class="flex items-center gap-3 font-mono text-[10px]">
+                  <div>SCORE: <span id="snake-score" class="text-emerald-400 font-bold">0</span></div>
+                  <div>HIGH: <span id="snake-high" class="text-amber-400 font-bold">0</span></div>
+                  <button onclick="toggleSnakeSound()" class="text-purple-400 hover:text-white" id="snake-sound-toggler">
+                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="relative flex flex-col items-center">
+                <canvas id="playground-snake-canvas" width="360" height="240" class="border border-purple-900/40 rounded-lg bg-[#0c0316] max-w-full"></canvas>
+                
+                <div id="snake-overlay" class="absolute inset-0 bg-neutral-950/90 flex flex-col items-center justify-center p-4 rounded-lg text-center border border-purple-900/20">
+                  <p class="text-indigo-400 font-display font-bold text-xs uppercase mb-1">Simulador Retro Snake</p>
+                  <p class="text-[10px] text-neutral-400 mb-3 max-w-xs leading-relaxed">Clique para ver o Pygame em ação! Setas ou W,A,S,D controlam.</p>
+                  <button onclick="startSnakeGame()" class="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[10px] uppercase px-4 py-2 rounded-lg transition-all">
+                    <i data-lucide="play" class="w-3.5 h-3.5"></i> Iniciar Canal
+                  </button>
+                </div>
+              </div>
+              <div class="flex justify-center gap-1 sm:hidden">
+                <button onclick="onSnakeKey('w')" class="bg-neutral-800 px-3 py-1 font-bold text-xs text-white rounded">▲</button>
+                <button onclick="onSnakeKey('a')" class="bg-neutral-800 px-3 py-1 font-bold text-xs text-white rounded">◀</button>
+                <button onclick="onSnakeKey('s')" class="bg-neutral-800 px-3 py-1 font-bold text-xs text-white rounded">▼</button>
+                <button onclick="onSnakeKey('d')" class="bg-neutral-800 px-3 py-1 font-bold text-xs text-white rounded">▶</button>
+              </div>
+            </div>
+          `;
+        }
+
+        // 3. RPG Textual
+        if (name.includes("rpg")) {
+          return `
+            <div class="mb-4 p-4 bg-[#0a0518] border border-violet-950 rounded-xl space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-violet-950 pb-3">
+                <span class="flex items-center gap-1.5 text-xs font-semibold text-violet-300 font-mono">
+                  <i data-lucide="terminal" class="w-4 h-4 text-violet-400"></i>
+                  TERMINAL SYSTEM: rpg_textual.py
+                </span>
+                <button onclick="restartRPG()" class="text-[9px] bg-violet-900/30 hover:bg-violet-900/60 text-violet-200 px-2 py-1 rounded border border-violet-800 font-mono flex items-center gap-1">
+                  <i data-lucide="rotate-cw" class="w-3 h-3"></i> Reiniciar
+                </button>
+              </div>
+              <div class="grid grid-cols-4 gap-2 font-mono text-center bg-violet-950/20 p-2.5 rounded-lg border border-violet-900/10 text-[9px]">
+                <div>
+                  <span class="text-violet-400 block font-bold">SAÚDE MENTAL</span>
+                  <span id="rpg-health" class="text-emerald-400 font-bold block text-xs">100%</span>
+                </div>
+                <div>
+                  <span class="text-violet-400 block font-bold">XP CONHECIMENTO</span>
+                  <span id="rpg-xp" class="text-amber-300 font-bold block text-xs">15 XP</span>
+                </div>
+                <div>
+                  <span class="text-violet-400 block font-bold">CAFÉ RESTANTE</span>
+                  <span id="rpg-coffee" class="text-yellow-400 font-bold block text-xs">3 x</span>
+                </div>
+                <div>
+                  <span class="text-violet-400 block font-bold">CATEGORIA</span>
+                  <span id="rpg-rank" class="text-sky-400 font-bold block text-xs">Júnior</span>
+                </div>
+              </div>
+              <div id="rpg-console" class="bg-black/80 rounded-lg p-3 h-40 overflow-y-auto border border-violet-950/40 text-[10px] font-mono leading-relaxed space-y-1 select-text scrollbar-thin">
+                <!-- Log feed -->
+              </div>
+              <div id="rpg-actions" class="space-y-2">
+                <p class="text-[9px] text-violet-400 font-mono uppercase tracking-widest font-semibold">Escolha um comando de ação:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <button onclick="makeRPGChoice(1)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+                    <span>Ação 1: Solo Hotfix</span>
+                    <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+                  </button>
+                  <button onclick="makeRPGChoice(2)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+                    <span>Ação 2: Offline Escape</span>
+                    <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+                  </button>
+                  <button onclick="makeRPGChoice(3)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+                    <span>Ação 3: Par Pleno</span>
+                    <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // 4. QR Code Creator
+        if (name.includes("qr_gen")) {
+          return `
+            <div class="mb-4 p-4 bg-pink-950/10 border border-pink-950/20 rounded-xl space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-pink-950/20 pb-3">
+                <span class="flex items-center gap-1.5 text-xs font-semibold text-pink-200 font-mono">
+                  <i data-lucide="database" class="w-4 h-4 text-pink-500"></i>
+                  DATA GENERATOR: qr_generator.js
+                </span>
+                <span class="text-[9px] bg-pink-500/10 px-2 py-0.5 text-pink-300 border border-pink-500/20 rounded font-mono font-bold">
+                  Código QR Customizado
+                </span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-[10px] font-mono text-pink-300 font-semibold mb-1 uppercase">Link de Destino:</label>
+                    <input id="qr-url-input" type="text" value="https://github.com/joséadulto" oninput="drawQRPlayground()" class="w-full text-[11px] bg-neutral-900 border border-pink-950/40 rounded-lg p-2 text-white font-mono focus:outline-none focus:border-pink-500" />
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[10px] font-mono text-pink-300 font-semibold mb-1 uppercase">Cor:</label>
+                      <input type="color" id="qr-color-input" value="#e91e63" oninput="drawQRPlayground()" class="w-full h-8 bg-transparent rounded border border-pink-950/25 cursor-pointer" />
+                    </div>
+                    <div class="flex flex-col justify-end">
+                      <label class="relative inline-flex items-center cursor-pointer mb-1.5">
+                        <input id="qr-logo-checkbox" type="checkbox" checked onchange="drawQRPlayground()" class="sr-only peer" />
+                        <div class="w-8 h-4.5 bg-neutral-800 rounded-full peer peer-checked:bg-pink-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all"></div>
+                        <span class="ml-2 text-[10px] text-pink-200 font-mono">Selo central</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex flex-col items-center justify-center bg-neutral-950 p-4 border border-pink-950/20 rounded-lg">
+                  <div class="relative p-2.5 bg-white rounded-xl shadow-lg flex items-center justify-center w-28 h-28" id="qr-container-view">
+                    <!-- SVG built dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // 5. Analytics spreadsheet funnels
+        if (name.includes("insights") || name.includes("vendas") || name.includes("financeiro")) {
+          return `
+            <div class="mb-4 p-4 bg-slate-950/20 border border-slate-900/40 rounded-xl space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-950 pb-3">
+                <span class="flex items-center gap-1.5 text-xs font-semibold text-slate-300 font-mono">
+                  <i data-lucide="line-chart" class="w-4 h-4 text-sky-400"></i>
+                  METRICS GRID: dashboard_financeiro.sql
+                </span>
+              </div>
+              <div class="bg-slate-900/40 p-3 rounded-lg border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <span class="text-[10px] font-mono text-slate-400 flex items-center gap-1 font-medium select-none">
+                  <i data-lucide="sliders" class="w-3.5 h-3.5 text-sky-400 animate-pulse"></i>
+                  ESTIMAR MULTIPLICADOR DE CONVERSÃO:
+                </span>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                  <input type="range" id="analytics-slider" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateAnalyticsPlayground(this.value)" class="w-full sm:w-28 accent-sky-400 h-1 bg-slate-800 rounded" />
+                  <span id="analytics-mult" class="text-[10px] font-mono font-bold text-sky-400 bg-sky-950/40 px-2 py-0.5 rounded border border-sky-900">100%</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="bg-slate-900/20 p-3 rounded-lg border border-slate-800 text-center font-mono">
+                  <div class="text-[9px] text-slate-400 uppercase mb-1">Clientes Adquiridos</div>
+                  <p id="an-clients" class="text-sm font-bold text-slate-100">48,220</p>
+                </div>
+                <div class="bg-slate-900/20 p-3 rounded-lg border border-slate-800 text-center font-mono">
+                  <div class="text-[9px] text-slate-400 uppercase mb-1">MRR Recorrente</div>
+                  <p id="an-mrr" class="text-sm font-bold text-slate-100">R$ 385,760</p>
+                </div>
+                <div class="bg-slate-900/20 p-3 rounded-lg border border-slate-800 text-center font-mono">
+                  <div class="text-[9px] text-slate-400 uppercase mb-1">Conversão</div>
+                  <p id="an-conv" class="text-sm font-bold text-slate-100">3.86%</p>
+                </div>
+              </div>
+              <!-- Funnel visual lines -->
+              <div class="space-y-2.5 pt-1">
+                <div class="space-y-1">
+                  <div class="flex justify-between text-[10px] font-mono text-slate-300">
+                    <span>1. Visualizações Gerais</span>
+                    <span id="funnel-v1" class="font-bold">1,248,903</span>
+                  </div>
+                  <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-900">
+                    <div class="bg-sky-500 h-full w-full"></div>
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <div class="flex justify-between text-[10px] font-mono text-slate-300">
+                    <span>2. Cadastro Iniciado</span>
+                    <span id="funnel-v2" class="font-bold">145,210</span>
+                  </div>
+                  <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-900">
+                    <div id="funnel-bar-2" class="bg-indigo-500 h-full w-[11.6%] transition-all duration-300"></div>
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <div class="flex justify-between text-[10px] font-mono text-slate-300">
+                    <span>3. Compras Pagas</span>
+                    <span id="funnel-v3" class="font-bold">48,220</span>
+                  </div>
+                  <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-900">
+                    <div id="funnel-bar-3" class="bg-emerald-500 h-full w-[3.86%] transition-all duration-300"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        return "";
+      }
+
+      // RENDER CORE ACCORDION LIST
+      function renderProjects() {
+        const container = document.getElementById("projects-accordion-list");
+        container.innerHTML = "";
+
+        // Filters matching Theme folder and type/search queries
+        const folder = TEMAS[selectedTemaKey].pasta;
+        const filtered = PROJETOS.filter(p => {
+          if (p.tema !== selectedTemaKey) return false;
+          if (typeFilter !== "all" && p.tipo !== typeFilter) return false;
+          if (searchQuery !== "") {
+            const matchName = p.nome.toLowerCase().includes(searchQuery);
+            const matchCode = p.conteudo.toLowerCase().includes(searchQuery);
+            return matchName || matchCode;
+          }
+          return true;
+        });
+
+        // Update indicators
+        document.getElementById("filtered-label").innerText = `${filtered.length} de ${PROJETOS.filter(p=>p.tema===selectedTemaKey).length} Atividades encontradas`;
+        document.getElementById("stat-count").innerText = PROJETOS.filter(p=>p.tema===selectedTemaKey).length;
+
+        if(filtered.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-16 px-4 bg-white/5 rounded-2xl border border-white/10 flex flex-col items-center justify-center space-y-3">
+              <i data-lucide="help-circle" class="w-10 h-10 text-white/20"></i>
+              <p class="text-xs text-white/50 max-w-sm leading-relaxed">
+                Nenhuma atividade ou arquivo localizado com base nos filtros indicados. Tente expandir ou recalibrar seus termos digitados.
+              </p>
+            </div>
+          `;
+          lucide.createIcons();
+          return;
+        }
+
+        filtered.forEach((p, idx) => {
+          const isOpen = activeOpenCard === p.nome;
+          const cardId = `card-${p.nome.replace(/\./g,'-')}`;
+          const titleFormatted = p.nome.replace(/_/g, " ").replace(/\.[^/.]+$/, "");
+
+          const div = document.createElement("div");
+          div.id = cardId;
+          div.className = "mb-4 bg-neutral-900/60 border border-neutral-800 rounded-2xl overflow-hidden transition-all duration-200 shadow-inner";
+          div.innerHTML = `
+            <!-- Accordion Header -->
+            <div 
+              onclick="toggleCard(\`${p.nome}\`)" 
+              style="${getHeaderStyle(isOpen)}"
+              class="flex items-center justify-between p-4 cursor-pointer hover:opacity-95 transition-all select-none font-sans"
+            >
+              <div class="flex items-center gap-3 w-full overflow-hidden">
+                <span class="text-[10px] shrink-0 font-mono p-1 px-1.5 bg-neutral-900/40 rounded border border-neutral-800/10 uppercase font-bold text-white/70">
+                  ${p.ext}
+                </span>
+                <h3 class="text-xs sm:text-sm font-display font-medium tracking-wider truncate text-white">
+                  ${p.nome}
+                </h3>
+              </div>
+              <div class="flex items-center gap-2.5 shrink-0 ml-2">
+                ${p.tipo === "codigo" ? `
+                  <button onclick="copyText(event, \`${p.conteudo.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" class="p-1 px-2.5 rounded bg-neutral-950/20 hover:bg-neutral-950/45 text-[10px] uppercase font-mono tracking-widest transition flex items-center gap-1.5 text-white/90">
+                    <i data-lucide="copy" class="w-3 h-3"></i> Copiar
+                  </button>
+                ` : ""}
+                <i data-lucide="${isOpen ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4 shrink-0 opacity-80"></i>
+              </div>
+            </div>
+
+            <!-- Content Area expanded -->
+            ${isOpen ? `
+              <div class="p-5 text-neutral-300 font-sans space-y-4 rounded-b-2xl border-t border-white/5 bg-neutral-900/30">
+                
+                <!-- Interactive Playgrounds inside panels (if exists) -->
+                ${getPlaygroundHTML(p.nome)}
+
+                <!-- If Link outer publisher -->
+                ${p.tipo === 'link' ? `
+                  <div class="p-4 bg-neutral-950 rounded-xl border border-neutral-800/70 space-y-3 font-sans">
+                    <p class="text-xs text-neutral-400">
+                      O projeto <strong class="text-neutral-100">${titleFormatted}</strong> está ativo externamente em produção:
+                    </p>
+                    <a href="${p.conteudo.trim().split(/\r?\n|\\\\n|\\n/)[0]}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-xs px-6 py-3 rounded-xl transition w-full text-center tracking-wide shadow-lg active:scale-95">
+                      🚀 ACESSAR PROJETO EXTERNO
+                      <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    </a>
+                  </div>
+                ` : ""}
+ 
+                <!-- If Code container markup viewer -->
+                ${p.tipo === 'codigo' ? `
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between text-[9px] font-mono text-neutral-500 font-bold tracking-wider">
+                      <span>CÓDIGO FONTE REGISTRADO</span>
+                      <span>UTF-8 • ${p.ext.toUpperCase()}</span>
+                    </div>
+                    <div class="relative rounded-xl overflow-hidden border border-neutral-800/80 bg-neutral-950 shadow-inner">
+                      <!-- Window control dots layout -->
+                      <div class="flex items-center justify-between px-4 py-2 bg-black/40 border-b border-neutral-900 font-mono text-[9px] text-neutral-500 select-none">
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                          <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                          <span class="ml-1 text-[10px] text-white/30 truncate max-w-[200px]">${p.caminho_relativo}</span>
+                        </div>
+                        <span>COMPILE READY</span>
+                      </div>
+                      <pre class="p-4 overflow-x-auto text-[11px] sm:text-xs font-mono text-neutral-200 leading-relaxed custom-scrollbar bg-neutral-950/80"><code>${p.conteudo}</code></pre>
+                    </div>
+                  </div>
+                ` : ""}
+ 
+                <!-- If simple TEXT markup fallback -->
+                ${p.tipo === 'texto' ? `
+                  <div class="border-l-2 border-neutral-500 pl-4 py-1.5 italic text-xs leading-relaxed text-neutral-400 bg-neutral-950/20 rounded-r-lg pr-3 whitespace-pre-line select-text font-mono">
+                    ${convertTextToHyperlinks(p.conteudo)}
+                  </div>
+                ` : ""}
+
+              </div>
+            ` : ""}
+          `;
+          container.appendChild(div);
+        });
+
+        lucide.createIcons();
+        triggerPlaygroundInitializers();
+      }
+
+      // TOGGLE CARD FLOW
+      function toggleCard(name) {
+        if(activeOpenCard === name) {
+          activeOpenCard = null;
+        } else {
+          activeOpenCard = name;
+        }
+        renderProjects();
+      }
+
+      // LAZY INITIALIZERS OF PLAYGROUNDS UPON VIEW
+      let animFrameId = null;
+      let pColor = "#f7df1e";
+      let pCount = 80;
+      let mouseX = null;
+      let mouseY = null;
+
+      function triggerPlaygroundInitializers() {
+        if (!activeOpenCard) {
+          if (animFrameId) cancelAnimationFrame(animFrameId);
+          if (snakeInterval) clearInterval(snakeInterval);
+          return;
+        }
+
+        const name = activeOpenCard.toLowerCase();
+        
+        // Setup Canvas particles
+        if (name.includes("partic")) {
+          setTimeout(initParticleCanvas, 100);
+        }
+        // Setup Snake Game
+        if (name.includes("snake")) {
+          setTimeout(() => {
+            document.getElementById("snake-high").innerText = localStorage.getItem("snake_high_score") || "0";
+            initSnakeCanvas();
+          }, 100);
+        }
+        // Setup RPG textual console
+        if (name.includes("rpg")) {
+          setTimeout(restartRPG, 100);
+        }
+        // Setup QR Emulator
+        if (name.includes("qr_gen")) {
+          setTimeout(drawQRPlayground, 100);
+        }
+        // Setup Analytical spreadsheet sliders
+        if (name.includes("insights") || name.includes("vendas") || name.includes("financeiro")) {
+          setTimeout(() => updateAnalyticsPlayground(1.0), 100);
+        }
+      }
+
+      // --- PLAYGROUND 1: PARTICLE CANVAS ENGINE ---
+      function setGlobalParticleColor(c) {
+        pColor = c;
+        const divs = document.querySelectorAll("#particle-color-palette button");
+        divs.forEach(btn => {
+          const bgCheck = btn.style.backgroundColor || btn.className;
+          if (btn.className.includes(c) || (btn.style.backgroundColor && btn.style.backgroundColor.includes(c))) {
+            btn.className = btn.className.replace("border-transparent", "border-white");
+          } else {
+            btn.className = btn.className.replace("border-white", "border-transparent");
+          }
+        });
+      }
+
+      function setGlobalParticleCount(val) {
+        pCount = parseInt(val);
+      }
+
+      function initParticleCanvas() {
+        const c = document.getElementById("playground-particle-canvas");
+        if(!c) return;
+        const ctx = c.getContext("2d");
+        
+        c.width = c.parentElement.clientWidth;
+        c.height = 220;
+
+        let particles = [];
+        
+        class P {
+          constructor() {
+            this.x = Math.random() * c.width;
+            this.y = Math.random() * c.height;
+            this.size = Math.random() * 4 + 1.5;
+            this.speedX = Math.random() * 1.5 - 0.75;
+            this.speedY = Math.random() * 1.5 - 0.75;
+          }
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if(this.x<0 || this.x>c.width) this.speedX *= -1;
+            if(this.y<0 || this.y>c.height) this.speedY *= -1;
+
+            if(mouseX !== null && mouseY !== null) {
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx*dx + dy*dy);
+              if(dist < 110) {
+                const force = (110 - dist) / 110;
+                this.x -= (dx/dist) * force * 3.5;
+                this.y -= (dy/dist) * force * 3.5;
+              }
+            }
+          }
+          draw() {
+            ctx.fillStyle = pColor;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+
+        function createP() {
+          particles = [];
+          for(let i=0; i<Math.min(pCount, 180); i++) {
+            particles.push(new P());
+          }
+        }
+
+        c.onmousemove = (e) => {
+          const rect = c.getBoundingClientRect();
+          mouseX = e.clientX - rect.left;
+          mouseY = e.clientY - rect.top;
+        };
+        c.onmouseleave = () => { mouseX = null; mouseY = null; };
+
+        createP();
+
+        function render() {
+          if(!document.getElementById("playground-particle-canvas")) return; // kill loop if expanded card changed
+          ctx.clearRect(0,0,c.width,c.height);
+          
+          if(particles.length !== pCount) createP(); // dynamic update count
+
+          particles.forEach(p => {
+            p.update();
+            p.draw();
+          });
+
+          // Core dynamic connection lines
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx*dx + dy*dy);
+              if (dist < 55) {
+                ctx.strokeStyle = pColor + "15";
+                ctx.lineWidth = 0.8;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.stroke();
+              }
+            }
+          }
+
+          animFrameId = requestAnimationFrame(render);
+        }
+
+        if(animFrameId) cancelAnimationFrame(animFrameId);
+        render();
+      }
+
+      // --- PLAYGROUND 2: PLAYABLE PYGAME RETRO SNAKE ---
+      let snakeInterval = null;
+      let snakeCobra = [];
+      let snakeDir = "DIREITA";
+      let snakeFood = [10, 10];
+      let snakeScore = 0;
+      let snakeHighScore = parseInt(localStorage.getItem("snake_high_score") || "0");
+      let snakePlay = false;
+      let snakeSound = true;
+      const snakeGridW = 24;
+      const snakeGridH = 16;
+      const snakeSize = 15;
+
+      function toggleSnakeSound() {
+        snakeSound = !snakeSound;
+        const icon = document.getElementById("snake-sound-toggler");
+        icon.innerHTML = snakeSound 
+          ? `<i data-lucide="volume-2" class="w-4 h-4"></i>`
+          : `<i data-lucide="volume-x" class="w-4 h-4"></i>`;
+        lucide.createIcons();
+      }
+
+      function initSnakeCanvas() {
+        const canvas = document.getElementById("playground-snake-canvas");
+        if(!canvas) return;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#0c0316";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        
+        // Draw grid
+        ctx.strokeStyle = "rgba(139, 92, 246, 0.05)";
+        for(let i=0; i<snakeGridW; i++) {
+          ctx.strokeRect(i*snakeSize, 0, 1, canvas.height);
+        }
+        for(let j=0; j<snakeGridH; j++) {
+          ctx.strokeRect(0, j*snakeSize, canvas.width, 1);
+        }
+      }
+
+      function startSnakeGame() {
+        document.getElementById("snake-overlay").classList.add("hidden");
+        snakeScore = 0;
+        document.getElementById("snake-score").innerText = "0";
+        snakeCobra = [[6,8],[5,8],[4,8]];
+        snakeDir = "DIREITA";
+        snakePlay = true;
+        
+        spawnSnakeFood();
+        
+        if (snakeInterval) clearInterval(snakeInterval);
+        snakeInterval = setInterval(moveSnake, 130);
+      }
+
+      function spawnSnakeFood() {
+        let fx = Math.floor(Math.random() * snakeGridW);
+        let fy = Math.floor(Math.random() * snakeGridH);
+        while (snakeCobra.some(([x,y]) => x===fx && y===fy)) {
+          fx = Math.floor(Math.random() * snakeGridW);
+          fy = Math.floor(Math.random() * snakeGridH);
+        }
+        snakeFood = [fx, fy];
+      }
+
+      function onSnakeKey(k) {
+        if(!snakePlay) return;
+        if ((k === "w" || k === "ArrowUp") && snakeDir !== "BAIXO") snakeDir = "CIMA";
+        if ((k === "s" || k === "ArrowDown") && snakeDir !== "CIMA") snakeDir = "BAIXO";
+        if ((k === "a" || k === "ArrowLeft") && snakeDir !== "DIREITA") snakeDir = "ESQUERDA";
+        if ((k === "d" || k === "ArrowRight") && snakeDir !== "ESQUERDA") snakeDir = "DIREITA";
+      }
+
+      window.addEventListener("keydown", (e) => onSnakeKey(e.key));
+
+      function playSnakeBeep(high) {
+        if(!snakeSound) return;
+        try {
+          const actx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = actx.createOscillator();
+          const vol = actx.createGain();
+          osc.connect(vol); vol.connect(actx.destination);
+          
+          if(high) {
+            osc.frequency.setValueAtTime(440, actx.currentTime);
+            vol.gain.setValueAtTime(0.04, actx.currentTime);
+            osc.start();
+            vol.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.1);
+            osc.stop(actx.currentTime + 0.12);
+          } else {
+            // Sad GameOver sound
+            osc.type = "sawtooth";
+            osc.frequency.setValueAtTime(180, actx.currentTime);
+            vol.gain.setValueAtTime(0.05, actx.currentTime);
+            osc.start();
+            osc.frequency.exponentialRampToValueAtTime(80, actx.currentTime + 0.35);
+            vol.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.38);
+            osc.stop(actx.currentTime + 0.38);
+          }
+        } catch(e){}
+      }
+
+      function moveSnake() {
+        const c = document.getElementById("playground-snake-canvas");
+        if(!c) { clearInterval(snakeInterval); return; }
+        const ctx = c.getContext("2d");
+
+        let [nx, ny] = snakeCobra[0];
+        if (snakeDir === "CIMA") ny -= 1;
+        if (snakeDir === "BAIXO") ny += 1;
+        if (snakeDir === "ESQUERDA") nx -= 1;
+        if (snakeDir === "DIREITA") nx += 1;
+
+        // Collision border
+        if(nx < 0 || nx >= snakeGridW || ny < 0 || ny >= snakeGridH || snakeCobra.some(([cx,cy])=>cx===nx && cy===ny)) {
+          clearInterval(snakeInterval);
+          snakePlay = false;
+          playSnakeBeep(false);
+          document.getElementById("snake-overlay").classList.remove("hidden");
+          document.getElementById("snake-overlay").innerHTML = `
+            <p class="text-rose-500 font-display font-black text-xs uppercase mb-1">GAME OVER</p>
+            <p class="text-[9px] text-neutral-400 mb-3">Você colidiu a cobra! Pontuação: ${snakeScore}</p>
+            <button onclick="startSnakeGame()" class="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[9px] uppercase px-4 py-2 rounded-lg transition-all">
+              <i data-lucide="play" class="w-3 h-3"></i> Jogar de Novo
+            </button>
+          `;
+          lucide.createIcons();
+          return;
+        }
+
+        const novaCobr = [[nx, ny], ...snakeCobra];
+        const [fx, fy] = snakeFood;
+        
+        if(nx === fx && ny === fy) {
+          snakeScore += 10;
+          document.getElementById("snake-score").innerText = snakeScore;
+          if(snakeScore > snakeHighScore) {
+            snakeHighScore = snakeScore;
+            localStorage.setItem("snake_high_score", snakeHighScore);
+            document.getElementById("snake-high").innerText = snakeHighScore;
+          }
+          playSnakeBeep(true);
+          spawnSnakeFood();
+        } else {
+          novaCobr.pop();
+        }
+
+        snakeCobra = novaCobr;
+
+        // Redraw
+        ctx.fillStyle = "#0c0316";
+        ctx.fillRect(0,0,c.width,c.height);
+
+        // Grid lines
+        ctx.strokeStyle = "rgba(139, 92, 246, 0.04)";
+        for(let i=0; i<snakeGridW; i++) { ctx.strokeRect(i*snakeSize, 0, 1, c.height); }
+        for(let j=0; j<snakeGridH; j++) { ctx.strokeRect(0, j*snakeSize, c.width, 1); }
+
+        // Food
+        ctx.fillStyle = "#f43f5e";
+        ctx.beginPath();
+        ctx.arc(snakeFood[0]*snakeSize + snakeSize/2, snakeFood[1]*snakeSize + snakeSize/2, snakeSize/2 - 1, 0, Math.PI*2);
+        ctx.fill();
+
+        // Cobra
+        snakeCobra.forEach(([x,y], idx) => {
+          ctx.fillStyle = idx === 0 ? "#10b981" : "#34d399";
+          ctx.fillRect(x*snakeSize+1, y*snakeSize+1, snakeSize-2, snakeSize-2);
+        });
+      }
+
+      // --- PLAYGROUND 3: CARREIRA TI TEXT RPG TERM ---
+      let rpgLog = [];
+      let rpgStats = { hp: 100, xp: 15, coffee: 3 };
+      let rpgStep = 1;
+
+      function logRPG(msg, type="") {
+        rpgLog.push({ text: msg, type });
+        const c = document.getElementById("rpg-console");
+        if(!c) return;
+        c.innerHTML = rpgLog.map(l => {
+          let css = "text-neutral-300";
+          if(l.type==="system") css = "text-yellow-400 font-bold";
+          if(l.type==="win") css = "text-emerald-400";
+          if(l.type==="loss") css = "text-rose-400";
+          return `<div class="${css}">${l.text}</div>`;
+        }).join("");
+        c.scrollTop = c.scrollHeight;
+      }
+
+      function restartRPG() {
+        rpgLog = [];
+        rpgStats = { hp: 100, xp: 15, coffee: 3 };
+        rpgStep = 1;
+
+        document.getElementById("rpg-actions").innerHTML = `
+          <p class="text-[9px] text-violet-400 font-mono uppercase tracking-widest font-semibold">Escolha um comando de ação:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <button onclick="makeRPGChoice(1)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+              <span>Assume o bug sozinho</span>
+              <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+            </button>
+            <button onclick="makeRPGChoice(2)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+              <span>Sobe de fininho</span>
+              <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+            </button>
+            <button onclick="makeRPGChoice(3)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+              <span>Chama suporte Pleno</span>
+              <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+            </button>
+          </div>
+        `;
+        lucide.createIcons();
+
+        logRPG("⚔️ JORNADA DO DESENVOLVEDOR RPG ATIVADA! ⚔️", "system");
+        logRPG("Você inicia sua carreira profissional como um Programador Júnior.");
+        logRPG("🚨 EVENTO IMPORTANTE: Ocorreu um temível erro 500 em Produção na sexta feira às 17h52!");
+        logRPG("O gerente geral de implantação pergunta quem assume o hotfix do Docker de emergência.");
+        updateRPGStatus();
+      }
+
+      function updateRPGStatus() {
+        document.getElementById("rpg-health").innerText = `${rpgStats.hp}%`;
+        document.getElementById("rpg-xp").innerText = `${rpgStats.xp} XP`;
+        document.getElementById("rpg-coffee").innerText = `${rpgStats.coffee} x`;
+        document.getElementById("rpg-rank").innerText = rpgStats.xp > 80 ? "Arquiteto" : rpgStats.xp > 45 ? "Pleno" : "Júnior";
+      }
+
+      function makeRPGChoice(op) {
+        if(rpgStep === 1) {
+          if(op === 1) {
+            rpgStats.hp -= 30; rpgStats.xp += 40;
+            logRPG("> Você chamou a responsabilidade sozinho!", "system");
+            logRPG("💡 Excelente! Você virou a noite debugarando logs de contêineres Docker. XP de Conhecimento altíssimo (+40 XP), mas fadigou sua saúde mental.", "win");
+          } else if(op === 2) {
+            rpgStats.xp -= 5;
+            logRPG("> Você fechou o Slack de fininho.", "system");
+            logRPG("🤫 Você assistiu série no final de semana, mas o arquiteto técnico descobriu e cobrou duramente na Sprint. Perda de moral técnico (-5 XP).", "loss");
+          } else {
+            rpgStats.hp -= 10; rpgStats.xp += 20;
+            logRPG("> Você chamou um mentor Pleno para parear.", "system");
+            logRPG("🤝 Decisão saudável de mentoria. Encontraram o loop com facilidade, mitigando dores de cabeça. (+20 XP)", "win");
+          }
+          
+          rpgStep = 2;
+          updateRPGStatus();
+          
+          setTimeout(() => {
+            logRPG("---------------------------------------------");
+            logRPG("🚀 EVENTO 2: A Code Review Quinzenal de Engenharia na Sprint!", "system");
+            logRPG("Sua entrega foi classificada com alta 'Dívida Técnica' pelo revisor do cliente.");
+            logRPG("Como você responde tecnicamente?");
+            
+            document.getElementById("rpg-actions").innerHTML = `
+              <p class="text-[9px] text-violet-400 font-mono uppercase tracking-widest font-semibold">Escolha um comando de ação:</p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button onclick="makeRPGChoice(1)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+                  <span>Refatora tudo de madrugada</span>
+                  <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+                </button>
+                <button onclick="makeRPGChoice(2)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+                  <span>Diz 'funciona na minha máquina'</span>
+                  <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+                </button>
+                <button onclick="makeRPGChoice(3)" class="bg-violet-950/40 hover:bg-violet-900/60 border border-violet-800 text-white font-bold text-[10px] py-2 px-3 rounded-lg flex items-center justify-between transition-all">
+                  <span>Pareia para entender as melhorias</span>
+                  <i data-lucide="send" class="w-3 h-3 text-violet-400"></i>
+                </button>
+              </div>
+            `;
+            lucide.createIcons();
+          }, 1200);
+
+        } else if(rpgStep === 2) {
+          if(op === 1) {
+            rpgStats.hp -= 20; rpgStats.xp += 30; rpgStats.coffee -= 1;
+            logRPG("> Você codou de madrugada.", "system");
+            logRPG("☕ Gastou um café. Refatorou os endpoints repetitivos, surpreendendo positivamente o time! (+30 XP)", "win");
+          } else if(op === 2) {
+            rpgStats.hp -= 40; rpgStats.xp -= 10;
+            logRPG("> Você defendeu o termo 'funciona em local'.", "system");
+            logRPG("😱 Desgaste extremo de comunicação. O revisor demonstrou 3 vazamentos de memória na sua lógica recursiva. Perda de saúde mental e técnica.", "loss");
+          } else {
+            rpgStats.hp += 5; rpgStats.xp += 25;
+            logRPG("> Agendou pareamento com o arquiteto.", "system");
+            logRPG("🌟 Gestão de engenharia formidável. Coletou conselhos valiosos de arquitetura limpa e aprovou de primeira! (+25 XP)", "win");
+          }
+
+          rpgStep = 3;
+          updateRPGStatus();
+          
+          setTimeout(() => {
+            logRPG("---------------------------------------------");
+            logRPG("🏆 SIMULAÇÃO FINALIZADA COM SUCESSO!", "win");
+            logRPG(`Métricas de Carreira consolidada: Conhecimento: ${rpgStats.xp} XP | Sobrevivência Mental: ${rpgStats.hp}%`);
+            
+            document.getElementById("rpg-actions").innerHTML = `
+              <div class="p-3 bg-violet-950/20 border border-violet-900/40 rounded-lg text-center font-mono text-[10px] text-emerald-400 flex items-center justify-center gap-2">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 animate-bounce"></i>
+                <span>SUA CARREIRA SURGIRA SOBRE OS BUGS COM SUCESSO!</span>
+              </div>
+            `;
+            lucide.createIcons();
+          }, 1000);
+        }
+      }
+
+      // --- PLAYGROUND 4: DYNAMIC SVG BRAND QR GENERATOR ---
+      function drawQRPlayground() {
+        const url = document.getElementById("qr-url-input").value;
+        const color = document.getElementById("qr-color-input").value;
+        const useLogo = document.getElementById("qr-logo-checkbox").checked;
+        const container = document.getElementById("qr-container-view");
+
+        // Hash code URL to draw pseudo-random beautiful grids
+        const hash = url.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const matrixSize = 15;
+        let svg = `<svg width="100" height="100" viewBox="0 0 ${matrixSize} ${matrixSize}">`;
+
+        for (let r = 0; r < matrixSize; r++) {
+          for (let c = 0; c < matrixSize; c++) {
+            // Alignment blocks
+            const isAlignment =
+              (r < 4 && c < 4) ||
+              (r < 4 && c >= matrixSize - 4) ||
+              (r >= matrixSize - 4 && c < 4) ||
+              (r === matrixSize - 2 && c === matrixSize - 2);
+
+            let active = false;
+            if (isAlignment) {
+              active = (r === 0 || r === 3 || c === 0 || c === 3) ||
+                       (r === 0 && c >= matrixSize - 4) || (r === 3 && c >= matrixSize - 4) ||
+                       (c === matrixSize - 4 && r < 4) || (c === matrixSize - 1 && r < 4) ||
+                       (r === matrixSize - 4 && c < 4) || (r === matrixSize - 1 && c < 4) ||
+                       (c === 0 && r >= matrixSize - 4) || (c === 3 && r >= matrixSize - 4);
+            } else {
+              active = ((r * c + hash) % 3 === 0) || ((r + c + hash) % 4 === 0);
+            }
+
+            // Clear center for brand emblem spacer
+            if (useLogo) {
+              const mid = Math.floor(matrixSize / 2);
+              if (Math.abs(r - mid) <= 1 && Math.abs(c - mid) <= 1) {
+                active = false;
+              }
+            }
+
+            if (active) {
+              svg += `<rect x="${c}" y="${r}" width="1" height="1" fill="${color}" shape-rendering="crispEdges" />`;
+            }
+          }
+        }
+
+        svg += `</svg>`;
+
+        if(useLogo) {
+          svg += `
+            <div style="background-color: ${color}" class="absolute inset-0 m-auto w-[26px] h-[26px] rounded-lg border border-white flex items-center justify-center font-bold text-white text-[10px] font-mono shadow-md select-none">
+              H
+            </div>
+          `;
+        }
+
+        container.innerHTML = svg;
+      }
+
+      // --- PLAYGROUND 5: ANALYTICS CONVERSION CALCULATOR ---
+      function updateAnalyticsPlayground(multiplier) {
+        multiplier = parseFloat(multiplier);
+        
+        // Dynamic conversion metrics formulas
+        const multPercentage = Math.round(multiplier * 100);
+        document.getElementById("analytics-mult").innerText = `${multPercentage}%`;
+
+        const baseClients = 48220;
+        const baseMRR = 385760;
+        const baseImpressions = 1248903;
+
+        const currentClients = Math.round(baseClients * multiplier);
+        const currentMRR = Math.round(baseMRR * multiplier);
+        const currentConv = ((currentClients / baseImpressions) * 100).toFixed(2);
+
+        document.getElementById("an-clients").innerText = currentClients.toLocaleString();
+        document.getElementById("an-mrr").innerText = `R$ ${currentMRR.toLocaleString()}`;
+        document.getElementById("an-conv").innerText = `${currentConv}%`;
+
+        // Update step visual graphics
+        const step2Val = Math.round(baseImpressions * 0.116 * multiplier);
+        document.getElementById("funnel-v2").innerText = step2Val.toLocaleString();
+        document.getElementById("funnel-v3").innerText = currentClients.toLocaleString();
+
+        const step2Width = 11.6 * multiplier;
+        const step3Width = parseFloat(currentConv);
+
+        document.getElementById("funnel-bar-2").style.width = `${Math.min(step2Width, 100)}%`;
+        document.getElementById("funnel-bar-3").style.width = `${Math.min(step3Width * 10, 100)}%`;
+      }
+
+      // ON INITIAL SYSTEM MOUNT
+      window.addEventListener("resize", () => {
+        const pCanvas = document.getElementById("playground-particle-canvas");
+        if (pCanvas && activeOpenCard && activeOpenCard.toLowerCase().includes("partic")) {
+          pCanvas.width = pCanvas.parentElement.clientWidth;
+        }
+      });
+
+      window.onload = () => {
+        // Select and load initial theme instantly
+        selectTheme("JavaScript");
+
+        // Warm up and cache-pull all other categories from backend folders in background
+        Object.keys(TEMAS).forEach(tk => {
+          if (tk !== "JavaScript") {
+            fetchThemeProjects(tk);
+          }
+        });
+      };
+    </script>
+  </body>
+</html>
